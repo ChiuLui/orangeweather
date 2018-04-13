@@ -3,6 +3,7 @@ package com.orange.orangeweather.db;
 import org.litepal.crud.DataSupport;
 
 /**
+ * 省份表
  * @author 神经大条蕾弟
  * @version 1.0
  * @date 2018/04/13 13:25

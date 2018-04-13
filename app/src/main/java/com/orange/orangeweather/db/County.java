@@ -3,6 +3,7 @@ package com.orange.orangeweather.db;
 import org.litepal.crud.DataSupport;
 
 /**
+ * 区表
  * @author 神经大条蕾弟
  * @version 1.0
  * @date 2018/04/13 13:33
@@ -16,6 +17,8 @@ public class County extends DataSupport {
     private String countyName;
 
     private String weatherId;
+
+    private int CityId;
 
     public int getId() {
         return id;
@@ -39,5 +42,13 @@ public class County extends DataSupport {
 
     public void setWeatherId(String weatherId) {
         this.weatherId = weatherId;
+    }
+
+    public int getCityId() {
+        return CityId;
+    }
+
+    public void setCityId(int cityId) {
+        CityId = cityId;
     }
 }
