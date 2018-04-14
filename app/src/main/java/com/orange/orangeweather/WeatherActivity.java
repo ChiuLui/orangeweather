@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.orange.orangeweather.gson.BingYingPic;
 import com.orange.orangeweather.gson.Forecast;
 import com.orange.orangeweather.gson.Weather;
 import com.orange.orangeweather.util.HttpUtil;
@@ -100,7 +101,8 @@ public class WeatherActivity extends AppCompatActivity {
             Glide.with(this).load(bingPic).into(bingPicImg);
         } else {
             //没有图片路径, 就调用loadBingPic()方法加载
-            loadBingPic();
+//            loadBingPic();
+            loadBingYingPic();
         }
 
     }
@@ -147,7 +149,8 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
         //每次去请求天气时也去请求图片
-        loadBingPic();
+//        loadBingPic();
+        loadBingYingPic();
     }
 
     /**
@@ -175,6 +178,40 @@ public class WeatherActivity extends AppCompatActivity {
                     public void run() {
                         //在主线程更新界面
                         Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 加载必应每日一图直接从官方地址获取图片
+     */
+    private void loadBingYingPic() {
+        //去服务器请求图片路径
+        String requestBingPic = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
+        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override//请求成功
+            public void onResponse(Call call, Response response) throws IOException {
+                //接收路径
+                final String bingPic = response.body().string();
+                //解析数据
+                BingYingPic bingYingPic = Utility.handleBingYingPicResponse(bingPic);
+                final String bingBasePicUrl = "http://cn.bing.com" + bingYingPic.images.get(0).bingBasePicUrl;
+                //存储到SP中
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
+                editor.putString("bing_pic", bingBasePicUrl);
+                editor.apply();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //在主线程更新界面
+                        Glide.with(WeatherActivity.this).load(bingBasePicUrl).into(bingPicImg);
                     }
                 });
             }

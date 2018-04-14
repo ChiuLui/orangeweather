@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.orange.orangeweather.db.City;
 import com.orange.orangeweather.db.County;
 import com.orange.orangeweather.db.Province;
+import com.orange.orangeweather.gson.BingYingPic;
 import com.orange.orangeweather.gson.Weather;
 
 import org.json.JSONArray;
@@ -113,6 +114,21 @@ public class Utility {
             String weatherContent = jsonArray.getJSONObject(0).toString();
             return new Gson().fromJson(weatherContent, Weather.class);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 将必应官网返回的JSON数据解析成BingYingPic实体类
+     * @param response
+     * @return
+     */
+    public static BingYingPic handleBingYingPicResponse(String response){
+        try {
+            BingYingPic bingYingPic = new Gson().fromJson(response, BingYingPic.class);
+            return bingYingPic;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
