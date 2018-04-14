@@ -21,7 +21,6 @@ import com.orange.orangeweather.util.HttpUtil;
 import com.orange.orangeweather.util.Utility;
 
 import org.litepal.crud.DataSupport;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
