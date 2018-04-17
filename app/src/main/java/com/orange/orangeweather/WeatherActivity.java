@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
+
+    public SwipeRefreshLayout swipeRefresh;
 
     private ScrollView weatherLayout;
 
@@ -80,19 +83,36 @@ public class WeatherActivity extends AppCompatActivity {
         comfortText = findViewById(R.id.comfort_text);
         carWashText = findViewById(R.id.car_wash_text);
         sportText = findViewById(R.id.sport_text);
+
+        swipeRefresh = findViewById(R.id.swipe_refresh);            //实例化下拉刷新
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary); //和颜色
+
         //先尝试从本地缓存中读取天气数据
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
+
+        //定义一个查询天气的id
+        final String weatherId;
+
         if (weatherString != null){
             //有缓存时直接解析天气数据, 设置数据显示
             Weather weather = Utility.handleWeatherResponse(weatherString);
+            weatherId = weather.basic.weatherId;//有缓存时从缓存得到天气id
             showWeatherInfo(weather);
         } else {
             //无缓存时去服务器查询天气
-            String weatherId = getIntent().getStringExtra("weather_id");
+            weatherId = getIntent().getStringExtra("weather_id");//没缓存时从Intent得到传过来的天气id
             weatherLayout.setVisibility(View.INVISIBLE);//没有数据时要把ScrollView隐藏
             requestWeather(weatherId);//请求数据
         }
+
+        //下拉刷新
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestWeather(weatherId);
+            }
+        });
 
         //尝试从SP中读取缓存的背景图片的路径
         String bingPic = prefs.getString("bing_pic", null);
@@ -122,6 +142,7 @@ public class WeatherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
+                        swipeRefresh.setRefreshing(false); //结束下拉刷新隐藏进度条
                     }
                 });
             }
@@ -144,6 +165,7 @@ public class WeatherActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         }
+                        swipeRefresh.setRefreshing(false);//结束下拉刷新隐藏进度条
                     }
                 });
             }
