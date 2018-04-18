@@ -35,6 +35,12 @@ import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
 
+
+    //定义一个查询天气的id
+    private String weatherId;
+
+    private Weather weather = null;
+
     public DrawerLayout drawerLayout;
 
     public Button navButton;
@@ -108,13 +114,9 @@ public class WeatherActivity extends AppCompatActivity {
         //先尝试从本地缓存中读取天气数据
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
-
-        //定义一个查询天气的id
-        final String weatherId;
-
         if (weatherString != null){
             //有缓存时直接解析天气数据, 设置数据显示
-            Weather weather = Utility.handleWeatherResponse(weatherString);
+            weather = Utility.handleWeatherResponse(weatherString);
             weatherId = weather.basic.weatherId;//有缓存时从缓存得到天气id
             showWeatherInfo(weather);
         } else {
@@ -128,6 +130,11 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                //先尝试从本地缓存中读取天气数据
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
+                String weatherString = prefs.getString("weather", null);
+                weather = Utility.handleWeatherResponse(weatherString);
+                weatherId = weather.basic.weatherId;
                 requestWeather(weatherId);
             }
         });
