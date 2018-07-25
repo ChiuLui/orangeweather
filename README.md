@@ -11,7 +11,7 @@
 
 
 <div align="center">
-<img src="https://github.com/ChiuLui/orangenote/blob/master/preview/orangeweather.png">
+<img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/orangeweather.png">
 </div>
 
 
@@ -54,9 +54,9 @@
 
 ### 预览
 <div align="center">
-<img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview1.png" width="50%"><img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview3.png" width="50%" >
+<img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview1.jpg" width="50%"><img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview3.jpg" width="50%" >
 </div>
 
 <div align="center">
-<img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview4.png" width="50%"><img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview5.png" width="50%">
+<img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview4.jpg" width="50%"><img src="https://github.com/ChiuLui/orangeweather/blob/master/preview/preview5.jpg.png" width="50%">
 </div>
